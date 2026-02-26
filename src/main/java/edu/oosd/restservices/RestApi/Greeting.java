@@ -1,13 +1,16 @@
 package edu.oosd.restservices.RestApi;
 
+import java.util.Map;
+
 public class Greeting {
+    private long id;
+    private String content;
+    private final Map<String, String> links;
 
-    private final long id;
-    private final String content;
 
-    public Greeting(long id, String content) {
         this.id = id;
         this.content = content;
+        this.links = links;
     }
 
     public long getId() {
@@ -17,4 +20,9 @@ public class Greeting {
     public String getContent() {
         return content;
     }
+
+    public Map<String, String> getLinks() {
+        return links;
+    }
+
 }
