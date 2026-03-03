@@ -21,10 +21,11 @@ public class GreetingController {
     public ResponseEntity<Greeting> greeting(
             @RequestParam(defaultValue = "World") String name) {
 
+        Map<String, String> links = Map.of();
         Greeting g = new Greeting(
                 counter.incrementAndGet(),
-                String.format(template, name)
-        );
+                String.format(template, name),
+                links);
         return ResponseEntity.status(HttpStatus.OK).body(g);
     }
 
