@@ -35,17 +35,7 @@ public class Appointment {
 
     public Appointment() {}
 
-    public Appointment {//
-        private Integer appointmentId;
-        private LocalDate date;
-        private LocalTime startTime;
-        private LocalTime endTime;
-        private Integer patientId;
-        private Integer doctorId;
-        private LocalDateTime timeStamp;
-
-
-        //Constructor
+    //Constructor
     public Appointment(Integer appointmentId,
                 LocalDate date,
                 LocalTime startTime,
