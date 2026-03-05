@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>edu.oosd.restservices</groupId>
-	<artifactId>RestApi</artifactId>
+	<artifactId>RestApi </artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>RestApi</name>
+	<name>RestApi </name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
