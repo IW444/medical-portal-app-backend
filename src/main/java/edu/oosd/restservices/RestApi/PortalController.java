@@ -1,12 +1,15 @@
 package edu.oosd.restservices.RestApi;
 
+import edu.oosd.restservices.RestApi.models.Appointment;
 import edu.oosd.restservices.RestApi.models.User;
+import edu.oosd.restservices.RestApi.repository.AppointmentRepository;
 import edu.oosd.restservices.RestApi.repository.MySqlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -111,6 +114,96 @@ public class PortalController {
         mySqlRepository.deleteById(id);
 
         return ResponseEntity.noContent().build(); // 204 No Content
+    }
+
+    @Autowired
+    AppointmentRepository appointmentRepository;
+
+    @GetMapping("/appointments")
+    public List<Appointment> getAppointments() {
+        return appointmentRepository.findAll();
+    }
+
+    @PostMapping("/appointments")
+    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
+
+        // Set server-side timestamp (optional if DB defaults it)
+        appointment.setTimestamp(LocalDateTime.now());
+
+        Appointment saved = appointmentRepository.save(appointment);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+
+    @PutMapping("/appointments/{id}")
+    public ResponseEntity<Appointment> updateAppointment(@PathVariable Integer id,
+                                                         @RequestBody Appointment updatedAppointment) {
+
+        Appointment existing = appointmentRepository.findById(id).orElse(null);
+
+        if (existing == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existing.setDate(updatedAppointment.getDate());
+        existing.setStartTime(updatedAppointment.getStartTime());
+        existing.setEndTime(updatedAppointment.getEndTime());
+        existing.setPatientId(updatedAppointment.getPatientId());
+        existing.setDoctorId(updatedAppointment.getDoctorId());
+        existing.setTimestamp(LocalDateTime.now());
+
+        Appointment saved = appointmentRepository.save(existing);
+
+        return ResponseEntity.ok(saved);
+    }
+
+    @PatchMapping("/appointments/{id}")
+    public ResponseEntity<Appointment> updateAppointmentField(@PathVariable Integer id,
+                                                              @RequestBody Appointment partial) {
+
+        Appointment existing = appointmentRepository.findById(id).orElse(null);
+
+        if (existing == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (partial.getDate() != null) {
+            existing.setDate(partial.getDate());
+        }
+
+        if (partial.getStartTime() != null) {
+            existing.setStartTime(partial.getStartTime());
+        }
+
+        if (partial.getEndTime() != null) {
+            existing.setEndTime(partial.getEndTime());
+        }
+
+        if (partial.getPatientId() != null) {
+            existing.setPatientId(partial.getPatientId());
+        }
+
+        if (partial.getDoctorId() != null) {
+            existing.setDoctorId(partial.getDoctorId());
+        }
+
+        existing.setTimestamp(LocalDateTime.now());
+
+        Appointment saved = appointmentRepository.save(existing);
+
+        return ResponseEntity.ok(saved);
+    }
+
+    @DeleteMapping("/appointments/{id}")
+    public ResponseEntity<Void> deleteAppointment(@PathVariable Integer id) {
+
+        if (!appointmentRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        appointmentRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
