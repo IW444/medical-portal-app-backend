@@ -30,8 +30,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private String role;
+    private Role role;
 
     @Column(name = "lastLogin")
     private LocalDateTime lastLogin;
@@ -42,7 +43,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer userId, String firstName, String lastName, String username, String password, String role, LocalDateTime lastLogin, LocalDateTime lastPasswordChange) {
+    public User(Integer userId, String firstName, String lastName, String username, String password, Role role, LocalDateTime lastLogin, LocalDateTime lastPasswordChange) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -113,11 +114,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

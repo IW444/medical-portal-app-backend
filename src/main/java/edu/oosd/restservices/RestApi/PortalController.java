@@ -4,6 +4,7 @@ import edu.oosd.restservices.RestApi.models.Appointment;
 import edu.oosd.restservices.RestApi.models.User;
 import edu.oosd.restservices.RestApi.repository.AppointmentRepository;
 import edu.oosd.restservices.RestApi.repository.MySqlRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,25 @@ public class PortalController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedUser); // 201 Created
+    }
+
+    //Logging in
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody User loginRequest) {
+        // 1. Find user by username
+        // Note: You may need to add a findByUsername method to MySqlRepository
+        User user = mySqlRepository.findAll().stream()
+                .filter(u -> u.getUsername().equals(loginRequest.getUsername()))
+                .findFirst()
+                .orElse(null);
+
+        if (user != null && BCrypt.checkpw(loginRequest.getPassword(), user.getPassword())) {
+            user.setLastLogin(LocalDateTime.now());
+            mySqlRepository.save(user);
+            return ResponseEntity.ok(user); // Success
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
     }
 
     @PutMapping("users/{id}")
@@ -148,8 +168,8 @@ public class PortalController {
         existing.setDate(updatedAppointment.getDate());
         existing.setStartTime(updatedAppointment.getStartTime());
         existing.setEndTime(updatedAppointment.getEndTime());
-        existing.setPatientId(updatedAppointment.getPatientId());
-        existing.setDoctorId(updatedAppointment.getDoctorId());
+        existing.setPatient(updatedAppointment.getPatient());
+        existing.setDoctor(updatedAppointment.getDoctor());
         existing.setTimestamp(LocalDateTime.now());
 
         Appointment saved = appointmentRepository.save(existing);
@@ -179,12 +199,12 @@ public class PortalController {
             existing.setEndTime(partial.getEndTime());
         }
 
-        if (partial.getPatientId() != null) {
-            existing.setPatientId(partial.getPatientId());
+        if (partial.getPatient() != null) {
+            existing.setPatient(partial.getPatient());
         }
 
-        if (partial.getDoctorId() != null) {
-            existing.setDoctorId(partial.getDoctorId());
+        if (partial.getDoctor() != null) {
+            existing.setDoctor(partial.getDoctor());
         }
 
         existing.setTimestamp(LocalDateTime.now());
