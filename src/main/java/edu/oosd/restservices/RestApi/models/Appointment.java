@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import edu.oosd.restservices.RestApi.models.User;
 
 @Entity
 @Table(name = "appointments")
@@ -24,14 +25,17 @@ public class Appointment {
     @Column(name = "endTime")
     private LocalTime endTime;
 
-    @Column(name = "patientId")
-    private Integer patientId;
+    @ManyToOne
+    @JoinColumn(name = "patientId")
+    private User patient;
 
-    @Column(name = "doctorId")
-    private Integer doctorId;
+    @ManyToOne
+    @JoinColumn(name = "doctorId")
+    private User doctor;
 
     @Column(name = "timeStamp")
     private LocalDateTime timeStamp;
+
 
     public Appointment() {
     }
@@ -41,15 +45,15 @@ public class Appointment {
                        LocalDate date,
                        LocalTime startTime,
                        LocalTime endTime,
-                       Integer patientId,
-                       Integer doctorId,
+                       User patient,
+                       User doctor,
                        LocalDateTime timeStamp) {
         this.appointmentId = appointmentId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
+        this.patient = patient;
+        this.doctor = doctor;
         this.timeStamp = timeStamp;
     }
 
@@ -85,21 +89,20 @@ public class Appointment {
         this.endTime = endTime;
     }
 
-    public Integer getPatientId() {
-        return patientId;
+    public User getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
+    public void setPatient(User patient) {
+        this.patient = patient;
     }
 
-    public Integer getDoctorId() {
-        return doctorId;
+    public User getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(Integer doctorId) {
-        this.doctorId = doctorId;
-
+    public void setDoctor(User doctor) {
+        this.doctor = doctor;
     }
 
     public LocalDateTime getTimestamp() {
