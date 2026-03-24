@@ -1,7 +1,7 @@
 package edu.oosd.restservices.RestApi.controllers;
 
 import edu.oosd.restservices.RestApi.models.User;
-import edu.oosd.restservices.RestApi.repository.MySqlRepository;
+import edu.oosd.restservices.RestApi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +14,17 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private MySqlRepository mySqlRepository;
+    private UserRepository userRepository;
 
     @GetMapping
     public List<User> getUsers() {
-        return mySqlRepository.findAll();
+        return userRepository.findAll();
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         user.setPassword(User.hashPassword(user.getPassword()));
-        User savedUser = mySqlRepository.save(user);
+        User savedUser = userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable Integer id,
                                            @RequestBody User updatedUser) {
 
-        User existingUser = mySqlRepository.findById(id).orElse(null);
+        User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.notFound().build();
         }
@@ -48,7 +48,7 @@ public class UserController {
             existingUser.setPassword(User.hashPassword(updatedUser.getPassword()));
         }
 
-        User savedUser = mySqlRepository.save(existingUser);
+        User savedUser = userRepository.save(existingUser);
         return ResponseEntity.ok(savedUser);
     }
 
@@ -56,7 +56,7 @@ public class UserController {
     public ResponseEntity<User> updateUserField(@PathVariable Integer id,
                                                 @RequestBody User partialUser) {
 
-        User existingUser = mySqlRepository.findById(id).orElse(null);
+        User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.notFound().build();
         }
@@ -83,18 +83,18 @@ public class UserController {
             existingUser.setLastPasswordChange(partialUser.getLastPasswordChange());
         }
 
-        User savedUser = mySqlRepository.save(existingUser);
+        User savedUser = userRepository.save(existingUser);
         return ResponseEntity.ok(savedUser);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
 
-        if (!mySqlRepository.existsById(id)) {
+        if (!userRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
-        mySqlRepository.deleteById(id);
+        userRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

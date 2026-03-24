@@ -41,8 +41,8 @@ public class AppointmentController {
         existing.setDate(updatedAppointment.getDate());
         existing.setStartTime(updatedAppointment.getStartTime());
         existing.setEndTime(updatedAppointment.getEndTime());
-        existing.setPatientId(updatedAppointment.getPatientId());
-        existing.setDoctorId(updatedAppointment.getDoctorId());
+        existing.setPatient(updatedAppointment.getPatient());
+        existing.setDoctor(updatedAppointment.getDoctor());
         existing.setTimestamp(LocalDateTime.now());
 
         Appointment saved = appointmentRepository.save(existing);
@@ -67,11 +67,11 @@ public class AppointmentController {
         if (partial.getEndTime() != null) {
             existing.setEndTime(partial.getEndTime());
         }
-        if (partial.getPatientId() != null) {
-            existing.setPatientId(partial.getPatientId());
+        if (partial.getPatient() != null) {
+            existing.setPatient(partial.getPatient());
         }
-        if (partial.getDoctorId() != null) {
-            existing.setDoctorId(partial.getDoctorId());
+        if (partial.getDoctor() != null) {
+            existing.setDoctor(partial.getDoctor());
         }
 
         existing.setTimestamp(LocalDateTime.now());
