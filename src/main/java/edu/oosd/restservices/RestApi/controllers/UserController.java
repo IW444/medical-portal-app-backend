@@ -54,9 +54,15 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        user.setPassword(User.hashPassword(user.getPassword()));
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+        //Check if the chosen username already exists
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        else {
+            user.setPassword(User.hashPassword(user.getPassword()));
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+        }
     }
 
     @PutMapping("/{id}")
