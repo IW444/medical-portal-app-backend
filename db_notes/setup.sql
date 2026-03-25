@@ -6,7 +6,7 @@ CREATE TABLE medical_portal.users(
     userId INT PRIMARY KEY AUTO_INCREMENT,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
-    username VARCHAR(100),
+    username VARCHAR(100) UNIQUE,
     `password` VARCHAR(60),
     `role` VARCHAR(50),
     lastLogin DATETIME,

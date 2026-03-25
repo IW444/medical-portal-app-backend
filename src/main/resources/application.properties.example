@@ -1,4 +1,5 @@
 #Copy this file and save as application.properties
+#Do not add your password to this file.
 #Add your password (for local use only) where indicated below
 
 spring.application.name=RestApi
