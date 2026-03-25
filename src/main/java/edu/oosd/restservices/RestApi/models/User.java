@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import org.mindrot.jbcrypt.BCrypt;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +28,7 @@ public class User {
     private String username;
 
     @Column(name = "password")
+    @JsonIgnore //Don't display passwords in the JSON response
     private String password;
 
     @Enumerated(EnumType.STRING)
