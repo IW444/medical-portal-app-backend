@@ -1,5 +1,6 @@
 package edu.oosd.restservices.RestApi.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.security.MessageDigest;
@@ -28,7 +29,8 @@ public class User {
     private String username;
 
     @Column(name = "password")
-    @JsonIgnore //Don't display passwords in the JSON response
+    //Don't display passwords in the JSON response
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Enumerated(EnumType.STRING)
