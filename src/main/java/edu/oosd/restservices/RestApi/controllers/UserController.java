@@ -22,36 +22,6 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    //Login
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User loginRequest) {
-        //If the username matches one in the database, we will get it here.
-        // Otherwise there is no return from the Optional function.
-        Optional<User> foundUser = userRepository.findByUsername(loginRequest.getUsername());
-
-        //If the username doesn't match our database, this login attempt is invalid.
-        if (foundUser.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        //Otherwise unwrap our optional object to get the user:
-        User user = foundUser.get();
-
-
-        //If the username is in the database and the password matches, return the user
-        //object.  The frontend will navigate to the appropriate dashboard for the role.
-        if(user.getPassword().equals(User.hashPassword(loginRequest.getPassword()))){
-            return ResponseEntity.ok(user);
-        }
-
-        //If the username is in the database, but the entered password is incorrect, this
-        //login attempt is invalid.
-        else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-    }
-
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         //Check if the chosen username already exists
