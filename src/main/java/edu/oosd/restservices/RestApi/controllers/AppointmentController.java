@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @RestController
@@ -21,6 +24,43 @@ public class AppointmentController {
     public List<Appointment> getAppointments() {
         return appointmentRepository.findAll();
     }
+
+    //For Doctors, find appointments by day
+    @GetMapping("/doctor/{doctorId}/today")
+    public List<Appointment> getAppointmentsForDoctorToday(@PathVariable Integer doctorId) {
+        return appointmentRepository.findByDoctorUserIdAndDate(doctorId, LocalDate.now());
+    }
+
+    //For Doctors, find appointments by week in Sunday - Saturday format
+    @GetMapping("/doctor/{doctorId}/week")
+    public List<Appointment> getAppointmentsForDoctorThisWeek(@PathVariable Integer doctorId) {
+        //The Tempora is allows us to go back to Sunday if we aren't at a Sunday or stay there if we are
+        //Similarly, we push forward to the next Saturday unless we are already there.
+        LocalDate start = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate end = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+        return appointmentRepository.findByDoctorUserIdAndDateBetween(doctorId, start, end);
+    }
+
+    //For Doctors, find appointments by month
+    @GetMapping("/doctor/{doctorId}/month")
+    public List<Appointment> getAppointmentsForDoctorThisMonth(@PathVariable Integer doctorId) {
+        LocalDate start = LocalDate.now().withDayOfMonth(1);
+        LocalDate end = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+        return appointmentRepository.findByDoctorUserIdAndDateBetween(doctorId, start, end);
+    }
+
+    //For Patients, find future appointments
+    @GetMapping("/patient/{patientId}/future")
+    public List<Appointment> getAppointmentsForPatientFuture(@PathVariable Integer patientId) {
+        return appointmentRepository.findByPatientUserIdAndDateGreaterThanEqual(patientId, LocalDate.now());
+    }
+
+    //For Patients, find past appointments
+    @GetMapping("/patient/{patientId}/past")
+    public List<Appointment> getAppointmentsForPatientPast(@PathVariable Integer patientId) {
+        return appointmentRepository.findByPatientUserIdAndDateLessThan(patientId, LocalDate.now());
+    }
+    
 
     @PostMapping
     public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
