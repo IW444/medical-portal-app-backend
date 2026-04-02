@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @RestController
@@ -25,70 +22,82 @@ public class AppointmentController {
         return appointmentRepository.findAll();
     }
 
-    //For Doctors, find appointments by day
-    @GetMapping("/doctor/{doctorId}/today")
-    public List<Appointment> getAppointmentsForDoctorToday(@PathVariable Integer doctorId) {
-        return appointmentRepository.findByDoctorUserIdAndDate(doctorId, LocalDate.now());
-    }
-
-    //For Doctors, find appointments by week in Sunday - Saturday format
-    @GetMapping("/doctor/{doctorId}/week")
-    public List<Appointment> getAppointmentsForDoctorThisWeek(@PathVariable Integer doctorId) {
-        //The Tempora is allows us to go back to Sunday if we aren't at a Sunday or stay there if we are
-        //Similarly, we push forward to the next Saturday unless we are already there.
-        LocalDate start = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-        LocalDate end = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
-        return appointmentRepository.findByDoctorUserIdAndDateBetween(doctorId, start, end);
-    }
-
-    //For Doctors, find appointments by month
-    @GetMapping("/doctor/{doctorId}/month")
-    public List<Appointment> getAppointmentsForDoctorThisMonth(@PathVariable Integer doctorId) {
-        LocalDate start = LocalDate.now().withDayOfMonth(1);
-        LocalDate end = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-        return appointmentRepository.findByDoctorUserIdAndDateBetween(doctorId, start, end);
-    }
-
-    //For Patients, find future appointments
-    @GetMapping("/patient/{patientId}/future")
-    public List<Appointment> getAppointmentsForPatientFuture(@PathVariable Integer patientId) {
-        return appointmentRepository.findByPatientUserIdAndDateGreaterThanEqual(patientId, LocalDate.now());
-    }
-
-    //For Patients, find past appointments
-    @GetMapping("/patient/{patientId}/past")
-    public List<Appointment> getAppointmentsForPatientPast(@PathVariable Integer patientId) {
-        return appointmentRepository.findByPatientUserIdAndDateLessThan(patientId, LocalDate.now());
-    }
-    
-
+    // Correct — check FIRST, save LAST
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
+    public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment) {
+
+        // 1. Check doctor clash FIRST
+        boolean doctorClash = appointmentRepository.doctorOverlap(
+                appointment.getDoctor().getUserId(),
+                appointment.getDate(),
+                appointment.getStartTime(),
+                appointment.getEndTime()
+        );
+        if (doctorClash) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Doctor already has an appointment at this time.");
+        }
+
+        // 2. Check patient clash FIRST
+        boolean patientClash = appointmentRepository.patientOverlap(
+                appointment.getPatient().getUserId(),
+                appointment.getDate(),
+                appointment.getStartTime(),
+                appointment.getEndTime()
+        );
+        if (patientClash) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Patient already has an appointment at this time.");
+        }
+
+        // 3. ONLY reach here if no clashes — now save
         appointment.setTimestamp(LocalDateTime.now());
         Appointment saved = appointmentRepository.save(appointment);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Appointment> updateAppointment(@PathVariable Integer id,
-                                                         @RequestBody Appointment updatedAppointment) {
+    public ResponseEntity<?> updateAppointment(@PathVariable Integer id,
+                                               @RequestBody Appointment appointment) {
 
-        Appointment existing = appointmentRepository.findById(id).orElse(null);
-        if (existing == null) {
+        if (!appointmentRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
-        existing.setDate(updatedAppointment.getDate());
-        existing.setStartTime(updatedAppointment.getStartTime());
-        existing.setEndTime(updatedAppointment.getEndTime());
-        existing.setPatient(updatedAppointment.getPatient());
-        existing.setDoctor(updatedAppointment.getDoctor());
-        existing.setTimestamp(LocalDateTime.now());
+        // Check doctor clash — exclude current appointment being edited
+        boolean doctorClash = appointmentRepository.doctorOverlapExcluding(
+                appointment.getDoctor().getUserId(),
+                appointment.getDate(),
+                appointment.getStartTime(),
+                appointment.getEndTime(),
+                id  // exclude this appointment's own ID
+        );
+        if (doctorClash) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Doctor already has an appointment at this time.");
+        }
 
-        Appointment saved = appointmentRepository.save(existing);
-        return ResponseEntity.ok(saved);
+        //  Check patient clash — exclude current appointment being edited
+        boolean patientClash = appointmentRepository.patientOverlapExcluding(
+                appointment.getPatient().getUserId(),
+                appointment.getDate(),
+                appointment.getStartTime(),
+                appointment.getEndTime(),
+                id  // exclude this appointment's own ID
+        );
+        if (patientClash) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Patient already has an appointment at this time.");
+        }
+
+        // Only save if no clashes
+        appointment.setAppointmentId(id);
+        appointment.setTimestamp(LocalDateTime.now());
+        Appointment updated = appointmentRepository.save(appointment);
+
+        return ResponseEntity.ok(updated);
     }
-
     @PatchMapping("/{id}")
     public ResponseEntity<Appointment> updateAppointmentField(@PathVariable Integer id,
                                                               @RequestBody Appointment partial) {
@@ -129,4 +138,9 @@ public class AppointmentController {
         appointmentRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }
+
+
+
