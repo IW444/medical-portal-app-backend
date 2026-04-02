@@ -48,6 +48,18 @@ public class AppointmentController {
         LocalDate end = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
         return appointmentRepository.findByDoctorUserIdAndDateBetween(doctorId, start, end);
     }
+
+    //For Patients, find future appointments
+    @GetMapping("/patient/{patientId}/future")
+    public List<Appointment> getAppointmentsForPatientFuture(@PathVariable Integer patientId) {
+        return appointmentRepository.findByPatientUserIdAndDateGreaterThanEqual(patientId, LocalDate.now());
+    }
+
+    //For Patients, find past appointments
+    @GetMapping("/patient/{patientId}/past")
+    public List<Appointment> getAppointmentsForPatientPast(@PathVariable Integer patientId) {
+        return appointmentRepository.findByPatientUserIdAndDateLessThan(patientId, LocalDate.now());
+    }
     
 
     @PostMapping
