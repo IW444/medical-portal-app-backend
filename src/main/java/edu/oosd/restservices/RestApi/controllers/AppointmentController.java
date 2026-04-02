@@ -60,6 +60,18 @@ public class AppointmentController {
     public List<Appointment> getAppointmentsForPatientPast(@PathVariable Integer patientId) {
         return appointmentRepository.findByPatientUserIdAndDateLessThan(patientId, LocalDate.now());
     }
+
+    //For Doctors, find future appointments
+    @GetMapping("/doctor/{doctorId}/future")
+    public List<Appointment> getAppointmentsForDoctorFuture(@PathVariable Integer doctorId) {
+        return appointmentRepository.findByDoctorUserIdAndDateGreaterThanEqual(doctorId, LocalDate.now());
+    }
+
+    //For Docotors, find past appointments
+    @GetMapping("/doctor/{doctorId}/past")
+    public List<Appointment> getAppointmentsForDoctorPast(@PathVariable Integer doctorId) {
+        return appointmentRepository.findByDoctorUserIdAndDateLessThan(doctorId, LocalDate.now());
+    }
     
 
     @PostMapping
