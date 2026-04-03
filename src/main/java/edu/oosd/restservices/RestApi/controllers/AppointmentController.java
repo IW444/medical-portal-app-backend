@@ -34,7 +34,7 @@ public class AppointmentController {
     //For Doctors, find appointments by week in Sunday - Saturday format
     @GetMapping("/doctor/{doctorId}/week")
     public List<Appointment> getAppointmentsForDoctorThisWeek(@PathVariable Integer doctorId) {
-        //The Tempora is allows us to go back to Sunday if we aren't at a Sunday or stay there if we are
+        //The Tempora allows us to go back to Sunday if we aren't at a Sunday or stay there if we are
         //Similarly, we push forward to the next Saturday unless we are already there.
         LocalDate start = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
         LocalDate end = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
