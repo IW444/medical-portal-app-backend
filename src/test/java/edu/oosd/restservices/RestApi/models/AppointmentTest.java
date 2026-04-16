@@ -3,15 +3,13 @@ package edu.oosd.restservices.RestApi.models;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 class AppointmentTest {
 
+//--------------------------
+//GETTER Tests
+//--------------------------
     @Test
     void getAppointmentId() {
-    }
-
-    @Test
-    void setAppointmentId() {
     }
 
     @Test
@@ -19,15 +17,7 @@ class AppointmentTest {
     }
 
     @Test
-    void setDate() {
-    }
-
-    @Test
     void getStartTime() {
-    }
-
-    @Test
-    void setStartTime() {
     }
 
     @Test
@@ -35,15 +25,7 @@ class AppointmentTest {
     }
 
     @Test
-    void setEndTime() {
-    }
-
-    @Test
     void getPatient() {
-    }
-
-    @Test
-    void setPatient() {
     }
 
     @Test
@@ -51,11 +33,34 @@ class AppointmentTest {
     }
 
     @Test
-    void setDoctor() {
+    void getTimestamp() {
+    }
+
+//--------------------------
+//SETTER tests
+//--------------------------
+    @Test
+    void setAppointmentId() {
     }
 
     @Test
-    void getTimestamp() {
+    void setDate() {
+    }
+
+    @Test
+    void setStartTime() {
+    }
+
+    @Test
+    void setEndTime() {
+    }
+
+    @Test
+    void setPatient() {
+    }
+
+    @Test
+    void setDoctor() {
     }
 
     @Test
