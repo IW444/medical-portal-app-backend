@@ -10,18 +10,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * REST Controller for managing Users.
+ * Provides functions for creating, retrieving, updating, and deleting users
+ * within the medical portal application.
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
+    /**
+     * Data access object for performing CRUD operations on the User table.
+     */
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Retrieves a list of all users registered in the database.
+     * * @return A list of all User objects.
+     */
     @GetMapping
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Creates a new user in the system.
+     * Validates that the username is unique and hashes the password before storing.
+     * * @param user The user object to be created, passed in the request body.
+     * @return A ResponseEntity containing the saved user and HTTP 201, created,
+     * or HTTP 409, conflict, if the username already exists.
+     */
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         //Check if the chosen username already exists
@@ -35,6 +54,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Performs a full update of an existing user.
+     * * @param id The unique ID of the user to update.
+     * @param updatedUser The User object containing the new details.
+     * @return A ResponseEntity with the updated user and HTTP 200, OK,
+     * or HTTP 404, Not Found, if the ID does not exist.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id,
                                            @RequestBody User updatedUser) {
@@ -59,6 +85,15 @@ public class UserController {
         return ResponseEntity.ok(savedUser);
     }
 
+    /**
+     * Performs a partial update on a user.
+     * This is used for updating specific fields like a password or a role
+     * without sending the entire user object.
+     * * @param id The unique ID of the user to partially update.
+     * @param partialUser A User object containing only the fields that need to be changed.
+     * @return A ResponseEntity with the updated user and HTTP 200, OK,
+     * or HTTP 404, Not Found, if the ID does not exist.
+     */
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateUserField(@PathVariable Integer id,
                                                 @RequestBody User partialUser) {
@@ -94,6 +129,12 @@ public class UserController {
         return ResponseEntity.ok(savedUser);
     }
 
+    /**
+     * Deletes a user from the database.
+     * * @param id The unique ID of the user to delete.
+     * @return A ResponseEntity with HTTP 204, No Content,
+     * or HTTP 404, Not Found, if the user does not exist.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
 
