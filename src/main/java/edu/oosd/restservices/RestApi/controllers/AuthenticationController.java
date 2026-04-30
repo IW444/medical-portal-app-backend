@@ -12,11 +12,42 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Optional;
 
+/**
+ * REST controller responsible for user authentication.
+ *
+ * <p>Handles login requests by verifying credentials against the database.
+ * Passwords are compared using BCrypt hashing, so plaintext passwords are
+ * never stored or directly compared.</p>
+ *
+ * <p>Base URL: {@code /login}</p>
+ */
+
 @RestController
 public class AuthenticationController {
 
     @Autowired
     private UserRepository userRepository;
+
+    /**
+     * Authenticates a user based on their username and password.
+     *
+     * <p>The login process follows these steps:</p>
+     * <ol>
+     *   <li>Look up the user by username in the database.</li>
+     *   <li>Return {@code 401 Unauthorized} if no matching username is found.</li>
+     *   <li>Use {@link BCrypt#checkpw} to verify the provided password against
+     *       the stored hash.</li>
+     *   <li>Return the full {@link User} object on success, allowing the frontend
+     *       to route the user to the appropriate role-based dashboard.</li>
+     *   <li>Return {@code 401 Unauthorized} if the password does not match.</li>
+     * </ol>
+     *
+     * @param loginRequest a {@link User} object containing the username and plaintext
+     *                     password submitted by the client
+     * @return {@code 200 OK} with the authenticated {@link User} if credentials are valid,
+     *         or {@code 401 Unauthorized} if the username is not found or the password
+     *         is incorrect
+     */
 
 
     //Login
