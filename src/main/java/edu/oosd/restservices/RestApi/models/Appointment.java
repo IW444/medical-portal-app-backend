@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 //Don't need this if we keep Appointment and User in the same model folder.
 //import edu.oosd.restservices.RestApi.models.User;
 
