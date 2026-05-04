@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 //Don't need this if we keep Appointment and User in the same model folder.
 //import edu.oosd.restservices.RestApi.models.User;
+
 
 @Entity
 @Table(name = "appointments")
@@ -38,8 +40,7 @@ public class Appointment {
     private LocalDateTime timeStamp;
 
 
-    public Appointment() {
-    }
+    public Appointment() {}
 
     //Constructor
     public Appointment(Integer appointmentId,
@@ -58,21 +59,13 @@ public class Appointment {
         this.timeStamp = timeStamp;
     }
 
-    public Integer getAppointmentId() {
-        return appointmentId;
-    }
+    public Integer getAppointmentId() { return appointmentId;}
 
-    public void setAppointmentId(Integer appointmentId) {
-        this.appointmentId = appointmentId;
-    }
+    public void setAppointmentId(Integer appointmentId) { this.appointmentId = appointmentId;}
 
-    public LocalDate getDate() {
-        return date;
-    }
+    public LocalDate getDate() { return date;}
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+    public void setDate(LocalDate date) { this.date = date;}
 
     public LocalTime getStartTime() {
         return startTime;
@@ -106,9 +99,7 @@ public class Appointment {
         this.doctor = doctor;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timeStamp;
-    }
+    public LocalDateTime getTimestamp() {return timeStamp;}
 
     public void setTimestamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;

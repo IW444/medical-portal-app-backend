@@ -19,7 +19,8 @@ class UserTest {
     @BeforeEach
     public void loadTestUser(){
         newGuy = new User(150,"Greg","Groog", "ggroog1", "password",
-                Role.PATIENT, LocalDateTime.of(2026,2,10,2,36), LocalDateTime.of(2026,2,10,2,50));
+                Role.PATIENT, LocalDateTime.of(2026,2,10,2,36),
+                LocalDateTime.of(2026,2,10,2,50));
     }
 
 //--------------------------
@@ -50,7 +51,7 @@ class UserTest {
     @DisplayName("UserID Confirmation")
     void getUserId() {
         //Verify that the User ID matches the correct user
-        assertEquals(150, newGuy.getUserId(), "Different Guy in there. Figure it out");
+        assertEquals(150, newGuy.getUserId(), "Please verify correct User ID.");
     }
 
     @Test
@@ -98,15 +99,20 @@ class UserTest {
 
     @Test
     void getLastPasswordChange() {
+    //Verify that the time of last password changed has been stored properly
+        assertEquals(LocalDateTime.of(2026,2,10,2,50),newGuy.getLastPasswordChange(),
+                "Incorrect time and date logged.");
     }
 
 //--------------------------
 //SETTER Tests
 //--------------------------
 
-//    @Test
-//    void setUserId() {
-//    }
+    @Test
+    void setUserId() {
+        newGuy.setUserId(100000);
+        assertEquals(100000, newGuy.getUserId(), "Failed to reset user ID");
+    }
 
     @Test
     @DisplayName("Update user's first name")
@@ -136,15 +142,10 @@ class UserTest {
         assertEquals("gg1234", newGuy.getPassword(),"Failed to set new password.");
     }
 
-//    @Test
-//    void setRole() {
-//    }
+    @Test
+    void setRole() {
+        newGuy.setRole(Role.DOCTOR);
+        assertEquals(Role.DOCTOR, newGuy.getRole(),"Failed to set user role.");
+    }
 
-//    @Test
-//    void setLastLogin() {
-//    }
-
-//    @Test
-//    void setLastPasswordChange() {
-//    }
 }
