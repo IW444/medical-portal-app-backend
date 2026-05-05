@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,10 +76,9 @@ public class UserController {
         existingUser.setUsername(updatedUser.getUsername());
         existingUser.setRole(updatedUser.getRole());
         existingUser.setLastLogin(updatedUser.getLastLogin());
-        existingUser.setLastPasswordChange(updatedUser.getLastPasswordChange());
-
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existingUser.setPassword(User.hashPassword(updatedUser.getPassword()));
+            existingUser.setLastPasswordChange(LocalDateTime.now());
         }
 
         User savedUser = userRepository.save(existingUser);
@@ -114,6 +114,7 @@ public class UserController {
         }
         if (partialUser.getPassword() != null && !partialUser.getPassword().isEmpty()) {
             existingUser.setPassword(User.hashPassword(partialUser.getPassword()));
+            existingUser.setLastPasswordChange(LocalDateTime.now());
         }
         if (partialUser.getRole() != null) {
             existingUser.setRole(partialUser.getRole());

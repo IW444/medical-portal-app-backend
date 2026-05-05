@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.mindrot.jbcrypt.BCrypt;
+import java.time.LocalDateTime;
 
 import java.util.Optional;
 
@@ -67,8 +68,11 @@ public class AuthenticationController {
 
 
         //If the username is in the database and the password matches, return the user
-        //object.  The frontend will navigate to the appropriate dashboard for the role.
+        //object after storing the last login time.  The frontend will navigate to the
+        // appropriate dashboard for the role.
         if(BCrypt.checkpw(loginRequest.getPassword(), user.getPassword())){
+            user.setLastLogin(LocalDateTime.now());
+            userRepository.save(user);
             return ResponseEntity.ok(user);
         }
 
