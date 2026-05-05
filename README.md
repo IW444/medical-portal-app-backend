@@ -348,22 +348,26 @@ Before paying visit to the patient, doctor can take a look to patient detail his
 
 **Main Window**:
 
-<img width="571" height="546" alt="Screenshot 2026-05-05 172224" src="https://github.com/user-attachments/assets/cf06e4fa-3f50-4f2e-b29f-166c5fb9b38c" />
+<img width="471" height="446" alt="Screenshot 2026-05-05 172224" src="https://github.com/user-attachments/assets/cf06e4fa-3f50-4f2e-b29f-166c5fb9b38c" />
+
 
 
 **Admin Dashboard Viewing Users**:
 
-<img width="1254" height="916" alt="Screenshot 2026-05-05 172754" src="https://github.com/user-attachments/assets/d4a6ba34-c854-4671-b3cb-dd8d0d80af1f" />
+<img width="1054" height="716" alt="Screenshot 2026-05-05 172754" src="https://github.com/user-attachments/assets/d4a6ba34-c854-4671-b3cb-dd8d0d80af1f" />
+
 
 
 **Patient Dashboard**:
 
-<img width="1129" height="855" alt="Screenshot 2026-05-05 172841" src="https://github.com/user-attachments/assets/ae2f2283-8bf2-4891-a3a8-7fcec44d70ad" />
+<img width="929" height="655" alt="Screenshot 2026-05-05 172841" src="https://github.com/user-attachments/assets/ae2f2283-8bf2-4891-a3a8-7fcec44d70ad" />
+
 
 
 **Delete User Confirmation**:
 
 <img width="455" height="230" alt="Screenshot 2026-05-05 172819" src="https://github.com/user-attachments/assets/83c245a5-8260-48c3-b6eb-7f38d8d2b160" />
+
 
 
 ## Data-flow diagrams
