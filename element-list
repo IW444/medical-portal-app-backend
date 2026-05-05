@@ -1,0 +1,4 @@
+edu.oosd.restservices.RestApi
+edu.oosd.restservices.RestApi.controllers
+edu.oosd.restservices.RestApi.models
+edu.oosd.restservices.RestApi.repository

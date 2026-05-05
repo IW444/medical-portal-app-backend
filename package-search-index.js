@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"edu.oosd.restservices.RestApi"},{"l":"edu.oosd.restservices.RestApi.controllers"},{"l":"edu.oosd.restservices.RestApi.models"},{"l":"edu.oosd.restservices.RestApi.repository"}];updateSearchResults();
