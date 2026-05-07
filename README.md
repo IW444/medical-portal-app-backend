@@ -381,7 +381,16 @@ Before paying visit to the patient, doctor can take a look to patient detail his
 
 </details>
 
+## Design Pattern
 
+1. **Repository Pattern** — UserRepository and AppointmentRepository abstract the database access away from the controllers. The controllers never write SQL directly.
+
+2. **DTO-like pattern** — Our frontend User and Appointment model classes act as Data Transfer Objects, carrying data between the frontend and backend without business logic.
+
+
+## Usage of AI
+
+We used ChatGPT to learn about GitHub, troubleshooting, also understanding the concepts of API connection and database and also used to enhancing the GUI.
 
 ##
 ##
