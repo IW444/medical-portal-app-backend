@@ -394,7 +394,7 @@ Before paying visit to the patient, doctor can take a look to patient detail his
 
 ## Usage of AI
 
-We used ChatGPT to learn about GitHub, troubleshooting, also understanding the concepts of API connection and database and also used to enhancing the GUI.
+We used ChatGPT to learn about GitHub, troubleshooting, also understanding the concepts of API connection and database and also used to enhance the GUI.
 
 ##
 ##
