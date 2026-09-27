@@ -1,4 +1,4 @@
-# OOSD2
+# Medical Portal App
 <details open="open">
 <summary>Requirements</summary>
 ﻿## Patient Portal Management System
