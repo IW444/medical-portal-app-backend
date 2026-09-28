@@ -120,7 +120,7 @@ The application manages patients in a doctor’s office, handling appointments, 
 
 **Diagram:**
 
-<img width="512" height="600" alt="Change Password Use Case Diagram" src="images/ChangePasswordDiagram" />
+<img width="512" height="600" alt="Change Password Use Case Diagram" src="images/ChangePasswordDiagram.png" />
 
 ## Use Case: Add New Patient
 
@@ -328,7 +328,7 @@ Before paying visit to the patient, doctor can take a look to patient detail his
 
 
 ## CRC cards for the classes
-<img width="760" height="498" alt="Appointments CRC Card" src="images/CRCAppointment.png" />
+<img width="760" height="498" alt="Appointments CRC Card" src="images/CRCAppointments.png" />
 <img width="784" height="541" alt="User CRC Card" src="images/CRCUser.png" />
 <img width="774" height="510" alt="Doctor CRC Card" src="images/CRCDoctor.png" />
 <img width="772" height="327" alt="Patient CRC Card" src="images/CRCPatient.png" />
