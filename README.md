@@ -55,7 +55,7 @@ src/
 The application manages patients in a doctor’s office, handling appointments, user information etc.
 ## High-level Requirements: 
 
-<img width="513" height="613" alt="Screenshot 2025-11-30 125844" src="https://github.com/user-attachments/assets/0fa4f951-42ab-4eac-a723-1f36d0ce765b" />
+<img width="513" height="613" src="images/HighLevelRequirements.png" />
 
 ## Uses Case : Log in
 **Description:** A user (Patient, Admin or Doctor) signs into the system using their login credentials to access personalized features.
